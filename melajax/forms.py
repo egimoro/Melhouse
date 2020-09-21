@@ -1,5 +1,5 @@
 from django import forms
-from .models import House
+from .models import House, Location
 
 class HouseForm(forms.ModelForm):
    
@@ -16,6 +16,19 @@ class HouseForm(forms.ModelForm):
         fields = '__all__'
 
 
+class LocationForm(forms.ModelForm):
 
+    suburb = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Suburb'}))
+    address = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Address'}))
+    postcode = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Postcode'}))
+    regionname = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Region Name'}))
+    propertycount = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Property Count'}))
+    distance = forms.FloatField(min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Distance'}) )
+    formloc = forms.CharField(widget=forms.HiddenInput(), required=False, label='')
+
+    class Meta:
+        model = Location
+        fields = '__all__'
+ 
    
    

@@ -34,6 +34,10 @@
             loadData();
             alert('House successfully added');
             $('#myModal').modal('hide');
+            window.setInterval('refresh()', 9000); 
+        },
+        error: (errormessage) =>{
+            alert(errormessage.responseText);
         }
         
 
@@ -106,7 +110,8 @@ loadData = () =>{
                         <td class="t_method">${house.method}</td>
                         <td class="t_date">${house.date}</td>
                         <td>
-                            <button  onclick="getDetail(${house.id})">Edit</button>
+                            <button class = "btn btn-primary"  onclick="getDetail(${house.id})">Edit</button>
+                            <button class = "btn btn-danger"  onclick="Delete(${house.id})">Delete</button>
                         </td>
                     </tr>
                 
@@ -117,6 +122,9 @@ loadData = () =>{
             $('#houseTable tbody').append(rows);
             console.log(data);
             
+        },
+        error: (errormessage) =>{
+            alert(errormessage.responseText);
         }
 
     });
@@ -154,8 +162,17 @@ Update = () =>{
             $('#myModal').modal('hide');
             $('#id_seller').val('');
             $('#id_rooms').val('');
+             $('#id_house_type').val('');
+             $('#id_price').val('');
+            $('#id_method').val('');
+             $('#id_date').val('');
+             window.setInterval('refresh()', 9000); 
+    
 
         
+        },
+        error: (errormessage) =>{
+            alert(errormessage.responseText);
         }
         
 
@@ -163,3 +180,169 @@ Update = () =>{
 
 
 }
+
+ refresh =()=> {
+    window .location.reload();
+};
+
+Delete = (id) =>{
+    var ans = confirm('Are you sure you want to delete this house?');
+
+    if (ans) {
+
+        $.ajax({
+            headers: {'X-CSRFToken': csrftoken},
+            url: 'house/delete/' + id,
+            type: 'POST',
+            dataType: 'json',
+            success: (data) =>{
+                loadData();
+                window.setInterval('refresh()', 2000); 
+            },
+            error: (errormessage) =>{
+                alert(errormessage.responseText);
+            }
+
+
+        });
+        
+    };
+
+};
+
+$('#getLocations').bind('click', ()=>{
+    loadData1();
+    alert('Here are the current locations');
+});
+
+
+loadData1 = () =>{
+
+    $.ajax({
+
+        url: '/location/list/',
+        type:'GET',
+        dataType: 'json',
+        success: (data) =>{
+            let rows = '';
+            $.each(data.location_list, (k, location) =>{
+                rows += `
+                    <tr id="location-${location.id}">
+                        <td>${location.id}</td>
+                        <td class="t_suburb">${location.suburb}</td>
+                        <td class="t_address">${location.address}</td>
+                        <td class="t_postcode">${location.postcode}</td>
+                        <td class="t_regionname">${location.regionname}</td>
+                        <td class="t_propertycount">${location.propertycount}</td>
+                        <td class="t_distance">${location.distance}</td>
+                        <td class="t_councilarea">${location.councilarea}</td>
+                        <td class="t_sellerh">${location.house_id}</td>
+                        <td>
+                            <button class = "btn btn-primary"  onclick="getDetail1(${location.id})">Edit</button>
+                            <button class = "btn btn-danger"  onclick="Delete1(${location.id})">Delete</button>
+                        </td>
+                    </tr>
+                
+                `;
+
+            });
+            
+            $('#locationTable tbody').append(rows);
+            console.log(data);
+            
+        },
+        error: (errormessage) =>{
+            alert(errormessage.responseText);
+        }
+
+    });
+
+}
+
+
+
+Update1 = () =>{
+
+    var id = $('#id_formhse').val();
+    
+    var formData = {
+        seller: $('#id_seller').val(),
+        
+
+        rooms: $('#id_rooms').val(),
+        house_type: $('#id_house_type').val(),
+        price: $('#id_price').val(),
+        method: $('#id_method').val(),
+        date: $('#id_date').val()
+
+
+    };
+
+    $.ajax({
+        headers: {'X-CSRFToken': csrftoken},
+        url: '/house/update/' +id,
+        data: formData,
+        type: 'POST',
+        dataType: 'json',
+        success: (data) =>{
+            console.log(data);
+            loadData();
+            alert('House successfully updated');
+            $('#myModal').modal('hide');
+            $('#id_seller').val('');
+            $('#id_rooms').val('');
+             $('#id_house_type').val('');
+             $('#id_price').val('');
+            $('#id_method').val('');
+             $('#id_date').val('');
+             window.setInterval('refresh()', 9000); 
+    
+
+        
+        },
+        error: (errormessage) =>{
+            alert(errormessage.responseText);
+        }
+        
+
+    });
+
+
+}
+
+$('#btnAdd1').bind('click', (e) =>{
+    e.preventDefault();
+  var formData1 = {
+      suburb: $('#id_suburb').val(),
+      address: $('#id_address').val(),
+      postcode: $('#id_postcode').val(),
+      regionname: $('#id_regionname').val(),
+      propertycount: $('#id_propertycount').val(),
+      distance: $('#id_distance').val(),
+      councilarea: $('#id_councilarea').val(),
+      house: $('#id_house').val()
+
+
+
+  };
+
+  $.ajax({
+      headers: {'X-CSRFToken': csrftoken},
+      url: '/location/add/',
+      data: formData1,
+      type: 'POST',
+      dataType: 'json',
+      success: (data) =>{
+          console.log(data);
+          loadData1();
+          alert('Location successfully added');
+          $('#myModal').modal('hide');
+          window.setInterval('refresh()', 9000); 
+      },
+      error: (errormessage) =>{
+          alert(errormessage.responseText);
+      }
+      
+
+  });
+});

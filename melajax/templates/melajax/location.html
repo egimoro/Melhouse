@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Locations</h1>
+
+    <p><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add a Location</button></p>
+    <p><button id="getLocations">Get Locations</button></p>
+
+    <table class="table" id="locationTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Suburb</th>
+                <th>Address</th>
+                <th>Postcode</th>
+                <th>Region Name</th>
+                <th>Property Count</th>
+                <th>Distance</th>
+                <th>Council Area</th>
+                <th>Seller</th>
+            </tr>
+        </thead>
+        <tbody>
+           
+        </tbody>
+    </table>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Location Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+              {% csrf_token %}
+           <div class="form-group">
+            {% for field in form %}   
+            <div class="fieldWrapper">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+                {% if field.help_text %}
+                <p class="help">{{ field.help_text|safe }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+               
+           </div>   
+       
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="btnAdd1" >Add a location</button>
+          <button type="button" class="btn btn-warning" id="btnUpdate1"
+            style="display: none;" onclick="Update1()">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{%  endblock %}
