@@ -42,7 +42,7 @@ class HouseAdd(View):
             
         else:
             return JsonResponse({'error': ''}, status=400)
-            
+
 
 class HouseUpdate(View):
     def post(self, request, id):
@@ -130,3 +130,7 @@ class LocationDelete(View):
         else:
             data['message'] = 'Error!'
         return JsonResponse(data)
+
+
+class StartPage(TemplateView):
+    template_name = 'melajax/start.html'

@@ -263,38 +263,41 @@ loadData1 = () =>{
 
 Update1 = () =>{
 
-    var id = $('#id_formhse').val();
+    var id = $('#id_formloc').val();
     
-    var formData = {
-        seller: $('#id_seller').val(),
-        
-
-        rooms: $('#id_rooms').val(),
-        house_type: $('#id_house_type').val(),
-        price: $('#id_price').val(),
-        method: $('#id_method').val(),
-        date: $('#id_date').val()
-
-
+    var formData1 = {
+        suburb: $('#id_suburb').val(),
+        address: $('#id_address').val(),
+        postcode: $('#id_postcode').val(),
+        regionname: $('#id_regionname').val(),
+        propertycount: $('#id_propertycount').val(),
+        distance: $('#id_distance').val(),
+        councilarea: $('#id_councilarea').val(),
+        house: $('#id_house').val()
+  
+  
+  
     };
 
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/house/update/' +id,
-        data: formData,
+        url: '/location/update/' + id,
+        data: formData1,
         type: 'POST',
         dataType: 'json',
         success: (data) =>{
             console.log(data);
-            loadData();
-            alert('House successfully updated');
+            loadData1();
+            alert('Location successfully updated');
             $('#myModal').modal('hide');
-            $('#id_seller').val('');
-            $('#id_rooms').val('');
-             $('#id_house_type').val('');
-             $('#id_price').val('');
-            $('#id_method').val('');
-             $('#id_date').val('');
+            $('#id_suburb').val('');
+            $('#id_address').val('');
+            $('#id_postcode').val('');
+            $('#id_regionname').val('');
+            $('#id_propertycount').val('');
+            $('#id_distance').val('');
+            $('#id_councilarea').val('');
+            $('#id_house').val('');
              window.setInterval('refresh()', 9000); 
     
 
@@ -346,3 +349,57 @@ $('#btnAdd1').bind('click', (e) =>{
 
   });
 });
+
+getDetail1 = (id) =>{
+    tr_id = '#location-' + id;
+
+    suburb = $(tr_id).find('.t_suburb').text();
+    address = $(tr_id).find('.t_address').text()
+    postcode = $(tr_id).find('.t_postcode').text();
+    regionname = $(tr_id).find('.t_regionname').text();
+    propertycount = $(tr_id).find('.t_propertycount').text();
+    distance = $(tr_id).find('.t_distance').text();
+    councilarea = $(tr_id).find('.t_councilarea').text();
+    sellerh = $(tr_id).find('.t_sellerh').text();
+
+    $('#id_formloc').val(id);
+    $('#id_suburb').val(suburb);
+    $('#id_address').val(address);
+    $('#id_postcode').val(postcode);
+    $('#id_regionname').val(regionname);
+    $('#id_propertycount').val(propertycount);
+    $('#id_distance').val(distance);
+    $('#id_councilarea').val(councilarea);
+    $('#id_house').val(sellerh);
+
+
+    $('#myModal').modal('show');
+    $('#btnAdd1').hide();
+    $('#btnUpdate1').show();
+}
+
+
+Delete1 = (id) =>{
+    var ans = confirm('Are you sure you want to delete this location?');
+
+    if (ans) {
+
+        $.ajax({
+            headers: {'X-CSRFToken': csrftoken},
+            url: '/location/delete/' + id,
+            type: 'POST',
+            dataType: 'json',
+            success: (data) =>{
+                loadData();
+                window.setInterval('refresh()', 2000); 
+            },
+            error: (errormessage) =>{
+                alert(errormessage.responseText);
+            }
+
+
+        });
+        
+    };
+
+};
