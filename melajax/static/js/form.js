@@ -192,7 +192,7 @@ Delete = (id) =>{
 
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
-            url: 'house/delete/' + id,
+            url: '/house/delete/' + id,
             type: 'POST',
             dataType: 'json',
             success: (data) =>{
@@ -403,3 +403,4 @@ Delete1 = (id) =>{
     };
 
 };
+

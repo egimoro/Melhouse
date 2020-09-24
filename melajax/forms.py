@@ -1,7 +1,10 @@
 from django import forms
 from .models import House, Location
 
+
 class HouseForm(forms.ModelForm):
+
+    
    
 
     seller = forms.CharField(label='Seller', widget=forms.TextInput(attrs={'placeholder': 'Seller'}))
@@ -10,8 +13,8 @@ class HouseForm(forms.ModelForm):
    
     price = forms.FloatField(label='price', min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Price'}))
    
-    date = forms.DateField(label='Date sold', widget=forms.DateInput())
-    class Meta:
+    date = forms.DateField(label='Date sold', widget=forms.widgets.DateInput(attrs={'type': 'date'})) 
+    class Meta:   
         model = House
         fields = '__all__'
 
@@ -24,6 +27,7 @@ class LocationForm(forms.ModelForm):
     regionname = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Region Name'}))
     propertycount = forms.IntegerField(min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Property Count'}))
     distance = forms.FloatField(min_value=0, widget=forms.NumberInput(attrs={'placeholder': 'Distance'}) )
+    councilarea = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Council Area'}))
     formloc = forms.CharField(widget=forms.HiddenInput(), required=False, label='')
 
     class Meta:
